@@ -6,8 +6,8 @@ type ContentListProps = {
 };
 
 const ContentList = ({ contents }: ContentListProps) => {
-  return (
-    <div className="grid grid-cols-2 flex-wrap p-10 gap-4">
+  return !!contents.length ? (
+    <div className="grid grid-cols-2 flex-wrap pt-10 pb-5 gap-4">
       {contents.map((content) => {
         return (
           <ContentCard
@@ -20,6 +20,10 @@ const ContentList = ({ contents }: ContentListProps) => {
           />
         );
       })}
+    </div>
+  ) : (
+    <div className="text-justify py-10">
+      <p className="text-lg">Nenhum dado disponível no momento ou para o filtro selecionado!</p>
     </div>
   );
 };

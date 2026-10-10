@@ -1,3 +1,10 @@
+export type Pagination = {
+  limit: number;
+  page: number;
+  total: number;
+  totalPages: number;
+};
+
 export type ContentResponse = {
   id: number;
   title: string;
@@ -12,10 +19,6 @@ export type ContentResponse = {
 
 export type ContentPaginationResponse = {
   data: ContentResponse[];
-  limit: number;
-  page: number;
-  total: number;
-  totalPages: number;
 };
 
 export type Content = {
@@ -25,4 +28,11 @@ export type Content = {
   contentType: string;
   duration: string;
   thumbnailUrl: string;
+};
+
+export type ContentRequestParams = {
+  search?: string;
+  category?: string;
+  page?: number;
+  limit?: number;
 };

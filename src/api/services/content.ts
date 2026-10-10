@@ -1,8 +1,20 @@
 import { api } from '@/api/index';
-import type { ContentPaginationResponse, ContentResponse } from '@/models/content';
+import type {
+  ContentPaginationResponse,
+  ContentRequestParams,
+  ContentResponse,
+  Pagination,
+} from '@/models/content';
 
-export const getAllContents = async () => {
-  const response = await api.get<ContentPaginationResponse>('/contents');
+export const getAllContents = async (params?: ContentRequestParams) => {
+  const response = await api.get<ContentPaginationResponse & Pagination>('/contents', {
+    params: {
+      search: params?.search || '',
+      category: params?.category || '',
+      page: params?.page || 1,
+      limit: params?.limit,
+    },
+  });
 
   return response;
 };
