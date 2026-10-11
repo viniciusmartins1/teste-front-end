@@ -1,12 +1,14 @@
-import { createContext, useCallback, useEffect, useState, type ReactNode } from 'react';
-import { contentListAdapter } from '@/models/adapters/contentAdapter';
+import { createContext, useCallback, useContext, useEffect, useState, type ReactNode } from 'react';
+import { contentDetailsAdapter, contentListAdapter } from '@/models/adapters/contentAdapter';
 
 import type { Category } from '@/models/category';
-import type { Content } from '@/models/content';
+import type { Content, ContentDetails } from '@/models/content';
 import type { AxiosError } from 'axios';
 
 import * as contentService from '@/api/services/content';
 import * as categoryService from '@/api/services/category';
+
+import { LoadingContext } from './LoadingContext';
 
 type ContentContextType = {
   contents: Content[];
@@ -15,11 +17,14 @@ type ContentContextType = {
   totalPages: number;
   categorySelected: string;
   search: string;
-  loading: boolean;
+  contentSelected: ContentDetails | undefined;
   getContents: (page?: number) => void;
   getCategories: () => void;
   setCategory: (slug: string) => void;
   setSearchTerm: (search: string) => void;
+  getContent: (contentId: number) => void;
+  markAsFavorite: (contentId: number) => void;
+  unmarkAsFavorite: (contentId: number) => void;
 };
 
 const ContentContext = createContext<ContentContextType>({
@@ -29,11 +34,14 @@ const ContentContext = createContext<ContentContextType>({
   totalPages: 0,
   categorySelected: '',
   search: '',
-  loading: false,
+  contentSelected: undefined,
   getContents: () => {},
   getCategories: () => {},
   setCategory: () => {},
   setSearchTerm: () => {},
+  getContent: () => {},
+  markAsFavorite: () => {},
+  unmarkAsFavorite: () => {},
 });
 
 type ContentProviderProps = {
@@ -47,12 +55,26 @@ const ContentContextProvider = ({ children }: ContentProviderProps) => {
   const [totalPages, setTotalPages] = useState(0);
   const [categorySelected, setCategorySelected] = useState('');
   const [search, setSearch] = useState('');
-  const [loading, setLoading] = useState(false);
+  const [contentSelected, setContentSelected] = useState<ContentDetails>();
+
+  const { openLoading, closeLoading } = useContext(LoadingContext);
+
+  useEffect(() => {
+    getContents();
+  }, [categorySelected]);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      getContents();
+    }, 1500);
+
+    return () => clearTimeout(timer);
+  }, [search]);
 
   const getContents = useCallback(
     async (page?: number) => {
       try {
-        setLoading(true);
+        openLoading();
         const { data } = await contentService.getAllContents({
           page: page || currentPage,
           category: categorySelected,
@@ -70,7 +92,7 @@ const ContentContextProvider = ({ children }: ContentProviderProps) => {
         setCurrentPage(0);
         setTotalPages(0);
       } finally {
-        setLoading(false);
+        closeLoading();
       }
     },
     [categorySelected, currentPage, search]
@@ -95,17 +117,44 @@ const ContentContextProvider = ({ children }: ContentProviderProps) => {
     setSearch(search);
   };
 
-  useEffect(() => {
-    getContents();
-  }, [categorySelected]);
+  const getContent = async (contentId: number) => {
+    try {
+      openLoading();
+      if (!contentId) {
+        throw new Error('Id Inválido');
+      }
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      getContents();
-    }, 1500);
+      const { data } = await contentService.getContentById(Number(contentId));
+      setContentSelected(contentDetailsAdapter(data));
+    } catch (error) {
+      setContentSelected(undefined);
+      alert('Conteúdo não encontrado');
+    } finally {
+      closeLoading();
+    }
+  };
 
-    return () => clearTimeout(timer);
-  }, [search]);
+  const markAsFavorite = async (contentId: number) => {
+    try {
+      openLoading();
+      await contentService.markAsFavorite(contentId);
+      getContent(contentId);
+    } catch (error) {
+      alert('Falha ao favoritar conteúdo');
+      closeLoading();
+    }
+  };
+
+  const unmarkAsFavorite = async (contentId: number) => {
+    try {
+      openLoading();
+      await contentService.unmarkAsFavorite(contentId);
+      getContent(contentId);
+    } catch (error) {
+      alert('Falha ao desfavoritar conteúdo');
+      closeLoading();
+    }
+  };
 
   return (
     <ContentContext.Provider
@@ -116,11 +165,14 @@ const ContentContextProvider = ({ children }: ContentProviderProps) => {
         totalPages,
         categorySelected,
         search,
-        loading,
+        contentSelected,
         getContents,
         getCategories,
         setCategory,
         setSearchTerm,
+        getContent,
+        markAsFavorite,
+        unmarkAsFavorite,
       }}
     >
       {children}

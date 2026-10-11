@@ -1,8 +1,8 @@
 import { api } from '@/api/index';
 import type {
+  ContentDetailsResponse,
   ContentPaginationResponse,
   ContentRequestParams,
-  ContentResponse,
   Pagination,
 } from '@/models/content';
 
@@ -20,7 +20,7 @@ export const getAllContents = async (params?: ContentRequestParams) => {
 };
 
 export const getContentById = async (contentId: number) => {
-  const response = await api.get<ContentResponse>(`/contents/${contentId}`);
+  const response = await api.get<ContentDetailsResponse>(`/contents/${contentId}`);
 
   return response;
 };
@@ -40,7 +40,7 @@ export const markAsFavorite = async (contentId: number) => {
 };
 
 export const unmarkAsFavorite = async (contentId: number) => {
-  const response = await api.post(`/favorites/${contentId}`);
+  const response = await api.delete(`/favorites/${contentId}`);
 
   return response;
 };

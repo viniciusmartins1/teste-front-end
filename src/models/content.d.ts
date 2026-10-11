@@ -36,3 +36,29 @@ export type ContentRequestParams = {
   page?: number;
   limit?: number;
 };
+
+export type ContentDetailsResponse = {
+  category: string;
+  description: string;
+  durationSeconds: number;
+  id: number;
+  instructor: string;
+  isFavorite: boolean;
+  publishedAt: string;
+  thumbnailUrl: string;
+  title: string;
+  type: string;
+};
+
+export type ContentDetails = {
+  category: string;
+  description: string;
+  duration: string;
+  id: number;
+  instructor: string;
+  isFavorite: boolean;
+  publishedAt: string;
+  thumbnailUrl: string;
+  title: string;
+  contentType: string;
+};

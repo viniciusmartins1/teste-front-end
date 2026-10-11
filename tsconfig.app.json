@@ -30,7 +30,9 @@
       "@/pages/*": ["./src/pages/*"],
       "@/styles/*": ["./src/styles/*"],
       "@/models/*": ["./src/models/*"],
-      "@/helpers/*": ["./src/helpers/*"]
+      "@/helpers/*": ["./src/helpers/*"],
+      "@/contexts/*": ["./src/contexts/*"],
+      "@/shared/*": ["./src/shared/*"]
     }
   },
   "include": ["src"]

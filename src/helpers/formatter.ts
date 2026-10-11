@@ -18,3 +18,11 @@ export const formatterDuration = (seconds: number): string => {
 export const capitalizeFirstLetter = (text: string) => {
   return String(text).charAt(0).toUpperCase() + String(text).slice(1);
 };
+
+export const formatterDate = (date: string) => {
+  if (!date) return '';
+
+  return new Intl.DateTimeFormat('pt-BR', {
+    dateStyle: 'medium',
+  }).format(new Date(date));
+};
