@@ -1,12 +1,14 @@
 import ContentFilter from '@/components/ContentFilter';
 import { useContext, useEffect } from 'react';
-import { ContentContext } from '../contexts/ContentContext';
+import { ContentContext } from '@/contexts/ContentContext';
 import ContentList from '@/components/ContentList';
 import ContentPagination from '@/components/ContentPagination';
 import { ClipLoader } from 'react-spinners';
+import { LoadingContext } from '@/contexts/LoadingContext';
 
 const Home = () => {
-  const { contents, getContents, totalPages, loading } = useContext(ContentContext);
+  const { contents, getContents, totalPages } = useContext(ContentContext);
+  const { loading } = useContext(LoadingContext);
 
   useEffect(() => {
     getContents();
