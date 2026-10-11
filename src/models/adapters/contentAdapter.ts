@@ -5,12 +5,17 @@ import type {
   ContentResponse,
 } from '@/models/content';
 import imgDefault from '@/assets/imageDefault.png';
-import { capitalizeFirstLetter, formatterDate, formatterDuration } from '@/helpers/formatter';
+import {
+  capitalizeFirstLetter,
+  formatterDate,
+  formatterDuration,
+  formatterTitleLength,
+} from '@/helpers/formatter';
 
 export const contentListAdapter = (content: ContentResponse): Content => {
   return {
     id: content.id,
-    title: content.title,
+    title: formatterTitleLength(content.title),
     contentType: capitalizeFirstLetter(content.type),
     category: capitalizeFirstLetter(content.category),
     duration: formatterDuration(content.durationSeconds),

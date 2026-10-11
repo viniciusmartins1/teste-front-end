@@ -1,5 +1,6 @@
 const ONE_MINUTE_IN_SECONDS = 60;
 const ONE_HOUR_IN_SECONDS = 3600;
+const MAX_TEXT_LENGTH = 80;
 
 export const formatterDuration = (seconds: number): string => {
   if (!seconds) return '';
@@ -25,4 +26,8 @@ export const formatterDate = (date: string) => {
   return new Intl.DateTimeFormat('pt-BR', {
     dateStyle: 'medium',
   }).format(new Date(date));
+};
+
+export const formatterTitleLength = (title: string) => {
+  return title.length > MAX_TEXT_LENGTH ? title.slice(0, MAX_TEXT_LENGTH) + '...' : title;
 };

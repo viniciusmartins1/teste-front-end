@@ -8,7 +8,7 @@ type ContentListProps = {
 
 const ContentList = ({ contents }: ContentListProps) => {
   return !!contents.length ? (
-    <div className="grid grid-cols-2 flex-wrap pt-10 pb-5 gap-4">
+    <div className="grid md:grid-cols-2 flex-wrap pt-10 pb-5 gap-4">
       {contents.map((content) => {
         return (
           <Link key={content.id} to={`/content/${content.id}`}>
