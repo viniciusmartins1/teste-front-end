@@ -27,7 +27,10 @@ const ContentFilter = () => {
           placeholder="Busque pelo título"
           value={search}
           disabled={loading}
-          onChange={(evt) => setSearchTerm(evt.target.value)}
+          onChange={(evt) => {
+            if (!search.length && !evt.target.value.trim().length) return;
+            setSearchTerm(evt.target.value);
+          }}
           className="border p-1 text-[16px] focus:border-gray-400 rounded-md md:w-80"
         />
 

@@ -114,7 +114,7 @@ const ContentContextProvider = ({ children }: ContentProviderProps) => {
   };
 
   const setSearchTerm = (search: string) => {
-    setSearch(search);
+    setSearch(search.trim());
   };
 
   const getContent = async (contentId: number) => {
