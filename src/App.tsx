@@ -1,7 +1,7 @@
 import { ContentContextProvider } from '@/contexts/ContentContext';
 import TemplatePage from '@/shared/TemplatePage';
 import { RouterProvider } from 'react-router/dom';
-import { routers } from './Routes';
+import { routes } from './Routes';
 import { LoadingContextProvider } from './contexts/LoadingContext';
 
 function App() {
@@ -9,7 +9,7 @@ function App() {
     <LoadingContextProvider>
       <ContentContextProvider>
         <TemplatePage>
-          <RouterProvider router={routers} />
+          <RouterProvider router={routes} />
         </TemplatePage>
       </ContentContextProvider>
     </LoadingContextProvider>

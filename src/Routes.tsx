@@ -2,7 +2,7 @@ import Home from '@/pages/Home';
 import ContentDetail from '@/pages/ContentDetail';
 import { createBrowserRouter } from 'react-router';
 
-export const routers = createBrowserRouter([
+export const routes = createBrowserRouter([
   {
     path: '/',
     element: <Home />,
