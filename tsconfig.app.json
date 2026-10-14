@@ -4,7 +4,7 @@
     "target": "es2023",
     "lib": ["ES2023", "DOM"],
     "module": "esnext",
-    "types": ["vite/client", "node", "jest"],
+    "types": ["vite/client", "node", "vitest/globals", "@testing-library/jest-dom"],
     "allowArbitraryExtensions": true,
     "skipLibCheck": true,
 
@@ -33,7 +33,9 @@
       "@/helpers/*": ["./src/helpers/*"],
       "@/contexts/*": ["./src/contexts/*"],
       "@/shared/*": ["./src/shared/*"]
-    }
+    },
+    "esModuleInterop": true,
+    "isolatedModules": true
   },
   "include": ["src"]
 }
